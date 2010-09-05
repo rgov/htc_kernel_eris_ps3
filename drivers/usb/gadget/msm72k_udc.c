@@ -1736,6 +1736,7 @@ static int msm72k_probe(struct platform_device *pdev)
 	ui->addr = ioremap(res->start, 4096);
 	if (!ui->addr)
 		return usb_free(ui, -ENOMEM);
+	INFO("ui->addr set to %p\n", ui->addr);
 
 	ui->buf = dma_alloc_coherent(&pdev->dev, 4096, &ui->dma, GFP_KERNEL);
 	if (!ui->buf)
