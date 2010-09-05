@@ -188,6 +188,31 @@ static struct platform_device usb_mass_storage_device = {
 #endif
 
 #ifdef CONFIG_USB_ANDROID
+
+/* This should come from <linux/usb/android.h> but I was getting errors #including it.
+   This is just a hack, FIXME and correct compiler errors.
+ */
+struct android_usb_platform_data {
+	/* USB device descriptor fields */
+	__u16 vendor_id;
+
+	/* Default product ID. */
+	__u16 product_id;
+
+	/* Product ID when adb is enabled. */
+	__u16 adb_product_id;
+
+	__u16 version;
+
+	char *product_name;
+	char *manufacturer_name;
+	char *serial_number;
+
+	/* number of LUNS for mass storage function */
+	int nluns;
+};
+/* End hackery */
+
 static struct android_usb_platform_data android_usb_pdata = {
 	.vendor_id	= 0x0bb4,
 	.product_id	= 0x0c01,

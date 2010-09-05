@@ -41,9 +41,9 @@ struct msm_hsusb_platform_data {
 
 	/* (de)assert the reset to the usb core */
 	void (*hw_reset)(bool enable);
-
 	/* for notification when USB is connected or disconnected */
 	void (*usb_connected)(int);
+
 	/* 1 : uart, 0 : usb */
 	void (*usb_uart_switch)(int);
 
