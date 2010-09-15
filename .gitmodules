@@ -1,0 +1,3 @@
+[submodule "PSFreedom"]
+	path = PSFreedom
+	url = git://github.com/kakaroto/PSFreedom.git
