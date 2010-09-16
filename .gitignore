@@ -34,6 +34,7 @@ modules.builtin
 #
 # Top-level generic files
 #
+/build
 /tags
 /TAGS
 /linux
