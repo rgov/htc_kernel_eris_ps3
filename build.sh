@@ -92,7 +92,6 @@ cd "${STARTDIR}"
 status "Extracting RAM disk from original boot.img"
 cd "${OUTPUTDIR}"
 
-rm -f .extractdetails ramdisk.img
 "${STARTDIR}/android-split-bootimg" "${STARTDIR}/original.img" > .extractdetails
 
 # Pull information about the original boot.img
@@ -100,13 +99,11 @@ BASEADDR=$(printf "0x%08x" $(( $(awk -F' += +' '$1 == "kernel_addr" { print $2 }
 CMDLINE=$(awk -F' += +' '$1 == "cmdline" { print $2 }' .extractdetails)
 
 status "Repackaging boot.img with new kernel"
-
 "${ANDROIDBIN}/mkbootimg" --cmdline "${CMDLINE}" --base "${BASEADDR}" --kernel "${KERNELDIR}/arch/arm/boot/zImage" --ramdisk ramdisk.img -o boot.img
-rm -f ramdisk.img
 
 status "Comparing original boot.img to new"
-"${STARTDIR}/android-split-bootimg" "${STARTDIR}/original.img" > .extractdetails2
-diff .extractdetails .extractdetails2 || true
+"${STARTDIR}/android-split-bootimg" boot.img > .extractdetails2
+$(which colordiff || echo diff) .extractdetails .extractdetails2 || true
 rm -f .extractdetails{,2} ramdisk.img
 
 cd "${STARTDIR}"
