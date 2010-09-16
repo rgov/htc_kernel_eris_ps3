@@ -1,0 +1,13 @@
+diff --git a/psfreedom_machine.c b/psfreedom_machine.c
+index ec6150c..cb78f98 100644
+--- a/psfreedom_machine.c
++++ b/psfreedom_machine.c
+@@ -135,7 +135,7 @@ static void psfreedom_set_address (struct usb_gadget *g, u8 address)
+    This uses the offset from the usb_gadget supplied to find
+    our value. Should hold while usb_info remains the same.
+ */
+-#define UI_GADGET_OFFSET 1724
++#define UI_GADGET_OFFSET 1620
+ #define USBDEVADDR (readu((unsigned)g - UI_GADGET_OFFSET) + 0x0154)
+ 
+ 

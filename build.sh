@@ -113,12 +113,25 @@ cd "${STARTDIR}"
 
 #######################
 
-status "Building PSFreedom"
+status "Patching PSFreedom"
 cd "${PSFREEDOMDIR}"
+if [ -d .git ]; then
+	git apply "${STARTDIR}/PSFreedom_patch.diff"
+else
+	patch -p1 < "${STARTDIR}/PSFreedom_patch.diff"
+fi
 
+status "Building PSFreedom"
 rm -f "${OUTPUTDIR}/psfreedom.ko"
 make ARCH=arm "CROSS_COMPILE=${ANDROIDCOMPILE}" "KDIR=${KERNELDIR}" desire
 cp -f psfreedom.ko "${OUTPUTDIR}"
+
+status "Reversing patch"
+if [ -d .git ]; then
+	git apply -R "${STARTDIR}/PSFreedom_patch.diff"
+else
+	patch -p1 < "${STARTDIR}/PSFreedom_patch.diff"
+fi
 
 cd "${STARTDIR}"
 
