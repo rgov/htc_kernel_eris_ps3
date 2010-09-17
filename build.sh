@@ -12,6 +12,8 @@ PSFREEDOMDIR=${KERNELDIR}/PSFreedom
 
 OUTPUTDIR=$(pwd)/build
 
+PATCHFILE=${OUTPUTDIR}/PSFreedom_patch.diff
+
 #######################
 
 status()
@@ -110,12 +112,16 @@ cd "${STARTDIR}"
 
 #######################
 
-status "Patching PSFreedom"
 cd "${PSFREEDOMDIR}"
-if [ -d .git ]; then
-	git apply "${STARTDIR}/PSFreedom_patch.diff"
-else
-	patch -p1 < "${STARTDIR}/PSFreedom_patch.diff"
+
+if [ -e "${PATCHFILE}" ]; then
+	status "Patching PSFreedom"
+	cd "${PSFREEDOMDIR}"
+	if [ -d .git ]; then
+		git apply "${PATCHFILE}"
+	else
+		patch -p1 < "${PATCHFILE}"
+	fi
 fi
 
 status "Building PSFreedom"
@@ -123,11 +129,13 @@ rm -f "${OUTPUTDIR}/psfreedom.ko"
 make ARCH=arm "CROSS_COMPILE=${ANDROIDCOMPILE}" "KDIR=${KERNELDIR}" desire
 cp -f psfreedom.ko "${OUTPUTDIR}"
 
-status "Reversing patch"
-if [ -d .git ]; then
-	git apply -R "${STARTDIR}/PSFreedom_patch.diff"
-else
-	patch -p1 < "${STARTDIR}/PSFreedom_patch.diff"
+if [ -e "${PATCHFILE}" ]; then
+	status "Reversing patch"
+	if [ -d .git ]; then
+		git apply -R "${PATCHFILE}"
+	else
+		patch -p1 < "${PATCHFILE}"
+	fi
 fi
 
 cd "${STARTDIR}"
